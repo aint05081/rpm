@@ -15,6 +15,12 @@ const commonButtonStyle = {
   boxShadow: "2px 2px 0 #333",
 };
 
+const frameOptions = [
+  { name: "알밤 농장장", file: "frame1.png" },
+  { name: "회장단과 함께", file: "frame2.png" },
+  { name: "감성 알밤", file: "frame3.png" },
+];
+
 function App() {
   const webcamRef = useRef(null);
   const [photos, setPhotos] = useState([]);
@@ -200,41 +206,38 @@ function App() {
       />
 
       {appState === "initial" && (
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", marginTop: "40px" }}>
-    <button onClick={handleStart} disabled={!selectedFrame} style={commonButtonStyle}>
-      Start
-    </button>
-
-    {/* 프레임 선택 버튼들 */}
-    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
-      {["frame1.png", "frame2.png", "frame3.png"].map((filename, idx) => {
-        const path = `/frames/${filename}`;
-        return (
-          <button
-            key={idx}
-            onClick={() => setSelectedFrame(path)}
-            style={{
-              ...commonButtonStyle,
-              borderColor: selectedFrame === path ? "#1b5e20" : "#388e3c",
-              backgroundColor: selectedFrame === path ? "#dcedc8" : "#fcd800"
-            }}
-          >
-            프레임 {idx + 1}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", marginTop: "40px" }}>
+          <button onClick={handleStart} disabled={!selectedFrame} style={commonButtonStyle}>
+            Start
           </button>
-        );
-      })}
-    </div>
 
-    {/* 프레임 미리보기 */}
-    {selectedFrame && (
-      <div style={{ marginTop: "20px" }}>
-        <img src={selectedFrame} alt="선택된 프레임 미리보기" style={{ maxWidth: "90%", height: "auto", border: "3px solid #4caf50" }} />
-        <p style={{ fontSize: "0.9rem", marginTop: "5px" }}>선택된 프레임 미리보기</p>
-      </div>
-    )}
-  </div>
-)}
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
+            {frameOptions.map((frame, idx) => {
+              const path = `/frames/${frame.file}`;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedFrame(path)}
+                  style={{
+                    ...commonButtonStyle,
+                    borderColor: selectedFrame === path ? "#1b5e20" : "#388e3c",
+                    backgroundColor: selectedFrame === path ? "#dcedc8" : "#fcd800"
+                  }}
+                >
+                  {frame.name}
+                </button>
+              );
+            })}
+          </div>
 
+          {selectedFrame && (
+            <div style={{ marginTop: "20px" }}>
+              <img src={selectedFrame} alt="선택된 프레임 미리보기" style={{ maxWidth: "90%", border: "3px solid #4caf50" }} />
+              <p style={{ fontSize: "0.9rem", marginTop: "5px" }}>선택된 프레임 미리보기</p>
+            </div>
+          )}
+        </div>
+      )}
 
       {appState === "recording" && (
         <div style={{
