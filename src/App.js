@@ -204,19 +204,37 @@ function App() {
     <button onClick={handleStart} disabled={!selectedFrame} style={commonButtonStyle}>
       Start
     </button>
+
+    {/* 프레임 선택 버튼들 */}
     <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
-      <button onClick={() => setSelectedFrame("/frames/frame1.png")} style={commonButtonStyle}>
-        프레임 1
-      </button>
-      <button onClick={() => setSelectedFrame("/frames/frame2.png")} style={commonButtonStyle}>
-        프레임 2
-      </button>
-      <button onClick={() => setSelectedFrame("/frames/frame3.png")} style={commonButtonStyle}>
-        프레임 3
-      </button>
+      {["frame1.png", "frame2.png", "frame3.png"].map((filename, idx) => {
+        const path = `/frames/${filename}`;
+        return (
+          <button
+            key={idx}
+            onClick={() => setSelectedFrame(path)}
+            style={{
+              ...commonButtonStyle,
+              borderColor: selectedFrame === path ? "#1b5e20" : "#388e3c",
+              backgroundColor: selectedFrame === path ? "#dcedc8" : "#fcd800"
+            }}
+          >
+            프레임 {idx + 1}
+          </button>
+        );
+      })}
     </div>
+
+    {/* 프레임 미리보기 */}
+    {selectedFrame && (
+      <div style={{ marginTop: "20px" }}>
+        <img src={selectedFrame} alt="선택된 프레임 미리보기" style={{ maxWidth: "90%", height: "auto", border: "3px solid #4caf50" }} />
+        <p style={{ fontSize: "0.9rem", marginTop: "5px" }}>선택된 프레임 미리보기</p>
+      </div>
+    )}
   </div>
 )}
+
 
       {appState === "recording" && (
         <div style={{
@@ -252,11 +270,6 @@ function App() {
 
       {appState === "done" && (
         <>
-          <img
-            src="/알밤농장.png"
-            alt="알밤농장로고"
-            style={{ width: "400px", maxWidth: "90%", margin: "20px 0" }}
-          />
           <img src={imageUrl} alt="Collage" style={{ maxWidth: "100%" }} />
           {imageQrUrl && (
             <div style={{ border: "4px dashed #388e3c", padding: "10px", display: "inline-block", marginTop: "10px" }}>
